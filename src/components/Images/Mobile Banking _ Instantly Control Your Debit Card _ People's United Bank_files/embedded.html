@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<!-- saved from url=(0123)https://guides.peoples.com/en/course/start/public-services-alerts/emulator-public-lock-card-card-controls/emulator/embedded -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    <script async="" src="./analytics.js.download"></script><script>
+        var pageLoadStart = Date.now();
+    </script>
+    <!-- set the encoding of your site -->
+    <script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"3c4155552c",applicationID:"422182090"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1169.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+    <!-- set the viewport width and initial-scale on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_token" content="UsrRmimOhQdVMpOF6Gvjyai5mxERv6gmoZdl6owL">
+    <meta name="csrf-token" content="UsrRmimOhQdVMpOF6Gvjyai5mxERv6gmoZdl6owL">
+    <title>Lock card - Card Controls | Services &amp; Alerts demo</title>
+    <script type="text/javascript" src="./angular.min.js.download"></script>
+    <script type="text/javascript" src="./angular-sanitize.min.js.download"></script>
+    <script type="text/javascript" src="./jquery-1.11.3.min.js.download"></script>
+
+    <link rel="stylesheet" href="./variables.css">
+    <link data-exclude="" media="all" rel="stylesheet" href="./all.min.css">
+    <script data-auto-replace-svg="" defer="" type="text/javascript" src="./all.min.js.download"></script>
+            <link data-exclude="" href="./css" rel="stylesheet">
+    
+    <link href="./bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="./bootstrap.min.js.download"></script>
+    <script>
+        var APP = {};
+        APP.language = "en";
+        APP.url_prefix = "/" + APP.language;
+        APP.translation = {};
+    </script>
+        <script type="text/javascript">
+        APP.translation = {
+            search: 'Search',
+            searchField: 'What do you want to learn?',
+            searchFieldAriaLabel: 'Search for a learning activity',
+            searchButtonAriaLabel: 'Run your search',
+            searchPageTitle: 'Search results for :SEARCH_TERM',
+            searchResultOne: ':COUNT result for <b>":SEARCH_TERM"</b>',
+            searchResultMany: ':COUNT results for <b>":SEARCH_TERM"</b>',
+            searchNoResults: 'Sorry, there are no results for your search.',
+            searchClear: 'Clear the search box',
+            paginationFirstPage: 'Go to first page.',
+            paginationPreviousPage: 'Go to page :PAGE_NUM, previous page.',
+            paginationPage: 'Go to page :PAGE_NUM.',
+            paginationCurrentPage: '**MISSING** pagination_current_page(course email_referral course:course-one course:public-services-alerts)',
+            paginationNextPage: 'Go to page :PAGE_NUM, next page.',
+            paginationLastPage: 'Go to last page.',
+            categoryLabel: 'Category:'
+        };
+    </script>
+    <script type="text/javascript" src="./app.min.js.download"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-147532979-1', 'auto');
+        ga('send', 'pageview');
+        $(document).ready(function () {
+            APP.pageLoadTime = Date.now()-pageLoadStart;
+            APP.pageName = 'course_start';
+            analytics.trigger("PAGE_LOAD", {});
+        });
+    </script>
+    <link media="all" rel="stylesheet" href="./app.min.css">
+    
+        <meta property="og:image" content="https://hspb.s3.us-east-2.amazonaws.com/peoples/images/menu_logo.png">
+    <meta property="og:image:width" content="300">
+    <meta property="og:image:height" content="43">
+        <script>
+        $(document).ready(function(){
+            ChannelLocal().setValue('public-mobile');
+        });
+    </script>
+</head>
+
+<body class="embedded-container">
+
+<div id="wrapper">
+    <div class="main-content main-content--embedded container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="main-content-box">
+                    <main id="main">
+                        <!-- contain the main content of the page -->
+                        <div id="content">
+                            <div class="container-fluid content mobile_simulator_page_content--default">
+
+    <div class="mobile-landing row">
+        <script type="text/template" id="landing_android">
+    <div class="" style="width: 100%; height: 100%;background: white">
+    <div class="emulator-landing_body-top" style="padding: 2% 7%;">
+        <div class="emulator-client-logo-container">
+            <img src="https://hspb.s3.us-east-2.amazonaws.com/peoples/images/logo.png"  alt="**MISSING** emulator_logo_img:alt(course email_referral course:course-one course:public-services-alerts)" class="emulator-client-logo">
+        </div>
+    </div>
+    <div class="emulator-landing_flex-container">
+        <div class="clearfix emulator-landing_body-top2 valign-wrapper">
+            <div class="valign">
+                <%= welcome_text%>
+            </div>
+        </div>
+
+        
+        <div class="emulator-landing_body-middle">
+            <div>
+                <%= body_text%>
+            </div>
+        </div>
+    </div>
+
+    <div class="emulator-landing_body-bottom">
+        <div class="body-bottom-wrapper">
+            <div style="text-align: center">
+                <div class="help-flex-container" style="color:black; text-align: left">
+
+                <div style="float:left;width:40px">
+                    <button class="emulator-help_icon reset_button_style" data-message_text="<%= message_text%>" style="vertical-align: text-bottom; line-height: 0;">
+                        <img src="https://hspb.s3.us-east-2.amazonaws.com/peoples/emulators/common/help-icon.png" width="26" alt="Help">
+                    </button>
+                </div>
+                <div style="width:180px; line-height:17px;color: #001928;font-size: 12px;float: left">
+                    If you need assistance at any point, select the help icon.                </div>
+                <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="emulator-warning-content hidden">
+                    <div class="emulator_steps" style="text-align: center">
+                        popup                        <a href="#" class="emulator_view_mobile open-mobile-view-js emulator-tapping block" data-target_step_id="1" style=
+"margin-top: 16px; text-decoration: none; text-align: center; display: block; background-color: #0079C1; color: #ffffff;font-size: 18px; line-height: 30px; border-radius: 3px;">
+                            OK
+                        </a>
+                    </div>
+                </div>
+                <div style="position: relative">
+
+                    <button id="btn-start-simulator" class="ada-main-target-fallback emulator-warning btn btn-primary emulator-tapping btn-start btn-start-js" data-target_step_id="1">
+                        Start demo                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</script>
+
+            <script type="text/template" id="ending_android">
+    <div class="ending-emulator-wrapper ">
+    <div class="emulator-ending-container">
+        <div class="emulator-landing_body-top" padding: 2% 7%;">
+                            <div class="emulator-client-logo-container">
+                    <img src="https://hspb.s3.us-east-2.amazonaws.com/peoples/images/logo.png"  alt="**MISSING** emulator_logo_img:alt(course email_referral course:course-one course:public-services-alerts)" class="emulator-client-logo">
+                </div>
+                    </div>
+        <div class="emulator-middle-container">
+            <% print(final_text)%>
+        </div>
+            </div>
+    <div class="ending-bottom-container">
+        <a
+                class="btn btn-primary btn-try-again emulator-ending__home_button"
+                                href="https://guides.peoples.com/en/home"
+                                alt="Explore More"
+                tabindex="0"
+        >
+            Explore More        </a>
+        <button
+                class="btn btn--ghost btn-try-again feature-explorer-redo_emulator close-emulator"
+                alt="View Again"
+                tabindex="0"
+        >
+            View Again
+        </button>
+    </div>
+</div>
+</script>
+
+                    <div class="emulator_container  col-xs-12 ">
+                    <!--[if IE]
+
+    <style type="text/css">
+        .modal-overlay {
+            background:transparent;
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#B3000000,endColorstr=#B3000000);
+            zoom: 1;
+        }
+    </style>
+    <![endif]-->
+
+    <script type="text/template" id="template-emulator">
+        <%
+            function shouldRenderHelp(element) {
+                return (element.type != 'help' || (element.type == 'help' && element.icon_url && element.icon_url.indexOf('check-mark') > -1))
+            }
+
+            function renderOverlay(element) {
+                if(element.overlay) {
+                    print('<div class="modal-overlay-soft"></div>');
+                }
+            }
+
+            function renderFocus(element) {
+                if (element.focus_pulse) {
+                    print(render_focus_pulse({"item": element.focus_pulse}));
+                }
+            }
+
+            function renderStepTemplate(step) {
+                var step_html_template = _.template($("#"+ step.template+"").html());
+                print(step_html_template(step.data))
+            }
+
+            function shouldRenderCompleteButton(element) {
+                return element.type == 'complete-btn';
+            }
+
+            function renderCompleteButton(element, tapping){
+                var completeTemplate = _.template($("#template-emulator_element-complete-btn").html());
+                print(completeTemplate({"element": element, "tapping": tapping}));
+            }
+        %>
+        <div class="emulator_step emulator_step-<%-step.id%> emulator_step--<%-step.override_key%>" data-id="<%-step.id%>"  data-start_element_id="<%-step.start_element_id%>"
+             data-flash_away_second="<%-step.flash_away_second%>" data-flash_away_target="<%-step.flash_away_target%>"
+             data-check_on_delay="<%-step.check_on_delay%>" data-check_help_element_id="<%-step.check_help_element_id%>"
+             data-auto_popup_content ="<%-step.auto_popup_content%>"
+             data-width="<%-step.width%>" data-height="<%-step.height%>"
+             data-overlay="<%-step.overlay%>"
+             data-popup-msg="<%-step.popup_msg%>"
+             data-popup-btn-label="<%-step.popup_btn_label%>"
+             data-popup-placement="<%-step.popup_placement%>"
+        >
+            <img class="emulator_phone_container emulator_step__frame hidden-xs visible-tablet-block"
+                 src="<%-frame_image %>"
+                 alt=""
+                 aria-hidden="true"/>
+            <div class="frame-interior frame-interior--mobile">
+            <% if(step.type == "HTML_TEMPLATE") { %>
+                <div class="emulator_phone_header_bar">
+    <div class="row">
+        <div class="col-xs-4">
+            <%  if(step.elements){
+                _.each(step.elements, function(element) {
+                    if(element.type == 'help' && !element.hidden && element.icon_url && element.icon_url.indexOf('check-mark') == -1) {%>
+                        <% print(template_element_factory(element))%>
+                    <%}
+                });
+            }%>
+        </div>
+        <div class="emulator-mobile-header-progress">
+            <div class="clearfix emulator-mobile-progress">
+                <div class="screen-count">
+                        <button class="chev-left previous-step emulator-navigator-disable"
+            data-previousstep="0"
+            aria-label="Previous step. disabled"
+            data-msg="Previous step"
+            data-disable-msg="Previous step. disabled">
+    </button>
+
+                    <span class="steps">
+            <span class="current-step">1</span><span><span class="sr-only">of</span><span aria-hidden="true">/</span></span><span class="total-steps">0</span>
+    </span>
+
+                        <button class="chev-right next-step emulator-navigator-disable"
+            data-nextstep="0"
+            aria-label="Next step. Disabled. Finish the simulator step on this page to enable this link."
+            data-msg="Next step"
+            data-disable-msg="<% (isEndingScreen)? print('Next step. Disabled.') : print('Next step. Disabled. Finish the simulator step on this page to enable this link.') %>">
+    </button>
+                </div>
+            </div>
+        </div>
+            </div>
+</div>
+                <div class="emulator_inner_phone_container emulator_inner_phone_container-HTML">
+                    <% renderStepTemplate(step) %>
+                </div>
+            <%} else if(step.type == "APP") { %>
+                <div class="emulator_phone_header_bar">
+    <div class="row">
+        <div class="col-xs-4">
+            <%  if(step.elements){
+                _.each(step.elements, function(element) {
+                    if(element.type == 'help' && !element.hidden && element.icon_url && element.icon_url.indexOf('check-mark') == -1) {%>
+                        <% print(template_element_factory(element))%>
+                    <%}
+                });
+            }%>
+        </div>
+        <div class="emulator-mobile-header-progress">
+            <div class="clearfix emulator-mobile-progress">
+                <div class="screen-count">
+                        <button class="chev-left previous-step emulator-navigator-disable"
+            data-previousstep="0"
+            aria-label="Previous step. disabled"
+            data-msg="Previous step"
+            data-disable-msg="Previous step. disabled">
+    </button>
+
+                    <span class="steps">
+            <span class="current-step">1</span><span><span class="sr-only">of</span><span aria-hidden="true">/</span></span><span class="total-steps">0</span>
+    </span>
+
+                        <button class="chev-right next-step emulator-navigator-disable"
+            data-nextstep="0"
+            aria-label="Next step. Disabled. Finish the simulator step on this page to enable this link."
+            data-msg="Next step"
+            data-disable-msg="<% (isEndingScreen)? print('Next step. Disabled.') : print('Next step. Disabled. Finish the simulator step on this page to enable this link.') %>">
+    </button>
+                </div>
+            </div>
+        </div>
+            </div>
+</div>
+                <div class="emulator_inner_phone_container emulator_inner_phone_container-APP">
+                    <img class="emulator_app_screenshot <%- step.flash_away_target? 'js-giffer':''%>"
+                         src="<%-step.background_image%>"
+                         alt="<%-step.alt_text%>"/>
+                    <% if(step.elements){
+                        _.each(step.elements, function(element) {
+
+                            if(shouldRenderHelp(element)) {
+                            renderOverlay(element);
+                            %>
+                            <div    class="emulator_interactive_element emulator_interactive_element-<%-element.id%> <%if(element.hidden){%>element-hidden<%}%>"
+                                    data-type="<%-element.type%>"
+                                    data-top="<%-element.top%>"
+                                    data-left="<%-element.left%>"
+                                    data-width="<%-element.width%>"
+                                    data-height="<%-element.height%>"
+                            >
+                                <%
+                                if(shouldRenderCompleteButton(element)) {
+                                    var tappingElement = _.find(step.elements, function(element) {
+                                        return element.type == 'tapping';
+                                    });
+                                    renderCompleteButton(element, tappingElement)
+                                } else { %>
+                                    <% print(template_element_factory(element))%>
+                                    <% renderFocus(element) %>
+                                <%}%>
+                            </div>
+                            <%}
+                        });%>
+                    <%}%>
+                </div>
+            <%}%>
+            </div>
+        </div>
+    </script>
+        <script type="text/template" id="template-emulator_element-complete-btn">
+    <div class="btn-transparent complete-btn-container js-complete js-complete-<%-element.id%>">
+        <button class="emulator-tapping js-complete-button" aria-label="<%-tapping.alt_text%>" data-target_step_id="<%-element.target_step_id%>">
+            <% var pulseIcon =_.template($('#template-emulator_focus_pulse').html()) %>
+            <% print(pulseIcon({"item": {"icon_url":"circle"}})) %>
+            Finish            <span class="js-complete-button-icons fa-stack fa-lg icon-gplus">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fas fa-check fa-stack-1x"></i>
+            </span>
+        </button>
+    </div>
+</script>
+
+        <script type="text/template" id="template-emulator_pulse_type">
+    <div class="pulsating pulsating--<%= type %>">
+        <div class="pulsating-inner pulsating-inner--<%= type %>">
+        </div>
+    </div>
+</script>
+<script type="text/template" id="template-emulator_focus_pulse">
+    <%
+        var pulseTemplate = _.template($('#template-emulator_pulse_type').html());
+        return pulseTemplate({type: (item.icon_url.indexOf('square')> -1)? 'rectangle': 'circle'});
+    %>
+</script>        <script type="text/template" id="template-emulator_element-help">
+            <button class="block emulator-help_icon <%if(element.disabled){%>emulator-help_icon-disabled tabbing-disabled<%}%>" data-message_text="<%-element.message_text%>">
+        <% if (element.icon_url.indexOf('help')> -1) { %>
+        <span class="top-help-text">Help</span>
+        <% } %>
+        <img src="<%-element.icon_url%>" alt="<%if(element.icon_url.indexOf('help')> -1 ){%><% }else{ %>Explorer complete<% }%>" class="top-help-icon">
+    </button>
+        </script>
+        <script type="text/template" id="template-emulator_element-tapping">
+            <button id="step-<%-element.target_step_id%>" class="ada-main-target-fallback block emulator-tapping<%-element.target_emulator_course_tag?' emulator-populate_sub':''%>" data-target_step_id="<%-element.target_step_id%>" data-course_tag="<%-element.target_emulator_course_tag%>" data-delay_and_check="<%-element.delay_and_check%>" data-check_help_element_id="<%-element.check_help_element_id%>"  title="<%-element.alt_text%>"><img src="https://hspb.s3.us-east-2.amazonaws.com/peoples/emulators/common/spacer_1x1.png" alt=""></button>
+            <% _.each(element.validations, function(validation){%>
+            <div class="emulator_tapping-validation" data-key="<%-validation.data_key%>" data-rule="<%-validation.rule%>" data-data="<%-validation.data%>" data-error_msg="<%-validation.error_msg%>"></div>
+            <%})%>
+        </script>
+        <script type="text/template" id="template-emulator_element-input">
+            <input class="emulator-input block emulator-input-text_align-<%-element.text_align%> <%-element.disabled%> <%if(element.auto_next){%> emulator-input-auto_next<%}%> <%if(element.mask_char){%>emulator_input-masked<%}%>"
+                   type="<%-element.input_type%>" data-mask_char="<%-element.mask_char%>" data-name="<%-element.data_key%>" placeholder="<%-element.placeholder%>" maxlength="<%-element.maxlength%>" data-target_step_id="<%-element.target_step_id%>" value="<%-element.default_value%>"
+                   data-color="<%-element.color%>" data-background_color="<%-element.background_color%>" data-value_format="<%-element.value_format%>" style="<% if(element.font_size) { print('font-size:'+element.font_size+'px;');}%>" <%-element.disabled%>>
+            <% _.each(element.validations, function(validation){%>
+            <div class="emulator_input-validation" data-rule="<%-validation.rule%>" data-data="<%-validation.data%>" data-error_msg="<%-validation.error_msg%>"></div>
+            <%})%>
+        </script>
+        <script type="text/template" id="template-emulator_element-header">
+            <div class="emulator-header">
+                <%if(element.header_type == "home_text") {%>
+                <a class="emulator-header-home" href="#">
+                    <img src="https://hspb.s3.us-east-2.amazonaws.com/peoples/emulators/common/icon_home.png" alt="<%-copy.emulator_header_home_alt%>">
+                </a>
+                <%} else if(element.header_type == "back_text") {%>
+                <a class="emulator-header-back" href="#">
+                    <img src="https://hspb.s3.us-east-2.amazonaws.com/peoples/emulators/common/icon_back.png" alt="<%-copy.emulator_header_back_alt%>">
+                </a>
+                <%}%>
+                <span class="emulator-header-text"><%=element.title%></span>
+                <a class="emulator-header-menu" href="#">
+                    <img src="https://hspb.s3.us-east-2.amazonaws.com/peoples/emulators/common/icon_menu.png" alt="<%-copy.emulator_header_menu_alt%>">
+                </a>
+            </div>
+        </script>
+        <script type="text/template" id="template-emulator_element-html">
+            <a href="#"	class="block emulator-html"><%=element.html%></a>
+        </script>
+        <script type="text/template" id="template-emulator_element-raw_html">
+            <%=element.html%>
+        </script>
+        <script type="text/template" id="template-emulator_element-modal">
+            <%=element.content%>
+        </script>
+        <script type="text/template" id="template-emulator_element-modal_with_button">
+            <div role="alertdialog" aria-label="<%=element.content%>">
+            <div aria-hidden="true"><%=element.content%></div>
+            <a class="emulator-tapping block" data-target_step_id="<%=element.target_step_id%>" href="#" role="button" aria-label="">
+                <input class="popup-btn btn btn-primary" type="button" value="<%=element.button_label%>" aria-label="">
+                <%if(element.modal_focus_pulse) {%>
+                <div class="emulator_focus_pulse" data-top="<%-element.modal_focus_pulse.top%>" data-left="<%-element.modal_focus_pulse.left%>" data-width="<%-element.modal_focus_pulse.width%>" data-height="<%-element.modal_focus_pulse.height%>">
+                    <img src="<%-element.modal_focus_pulse.icon_url%>" alt="Tap here">
+                </div>
+                <% }%>
+            </a>
+            </div>
+        </script>
+        <script type="text/template" id="template-emulator_element-modal_with_button_center">
+            <div role="alertdialog" aria-label="<%=element.content%>">
+            <div aria-hidden="true"><%=element.content%></div>
+            <a class="emulator-tapping block popup-btn btn btn-primary" data-target_step_id="<%=element.target_step_id%>" href="#" aria-label="" role="button">
+                <input id="step-<%-element.target_step_id%>-input" type="button" value="<%=element.button_label%>" aria-label="">
+            </a>
+            </div>
+        </script>
+        <script type="text/template" id="template-emulator_menu">
+            <div class="emulator_menu">
+                <div class="emulator_menu-header">&nbsp;</div>
+                <div class="emulator_menu-body">
+                    <p class="emulator_menu-body-title"><%=copy.menu_body_subtitle%></p>
+                    <%_.each(data, function(menu_item){%>
+                    <%
+                    var has_child = false;
+                    _.each(menu_item.submenu, function(submenu_item){
+                    if(menu_tag_maps[submenu_item.tag + "-android"]) {
+                    has_child = true;
+                    submenu_item.tag += "-android";
+                    } else if(menu_tag_maps[submenu_item.tag + "-ios"]) {
+                    has_child = true;
+                    submenu_item.tag += "-ios";
+                    }
+                    });
+                    if(has_child || menu_item.url) {
+                    %>
+                    <div class="emulator_menu-1-item emulator_menu-1-item-<%-menu_item.tag%>">
+                        <%if(menu_item.url) {%>
+                        <a class="emulator_menu-item-title unlink" href="<%=menu_item.url%>">
+                            <%=menu_item.name%>
+                        </a>
+                        <% } else {%>
+                        <div class="emulator_menu-item-title">
+                            <%=menu_item.name%>
+                        </div>
+                        <%_.each(menu_item.submenu, function(submenu_item){%>
+                        <% if(menu_tag_maps[submenu_item.tag]){ %>
+                        <a class="emulator_menu-2-item emulator-populate_sub" data-course_tag="<%-submenu_item.tag%>" href="#">
+                            <%=submenu_item.name%>
+                        </a>
+                        <%}%>
+                        <%});%>
+                        <%}%>
+                    </div>
+                    <%}%>
+                    <%});%>
+                </div>
+                <div class="emulator_menu-footer">
+                    <a href="<%-copy.menu_footer_language_link%>"><%=copy.menu_footer_language%></a>
+                    <span><%=copy.menu_footer_copyright%></span>
+                </div>
+            </div>
+        </script>
+        <script type="text/template" id="template-emulator_modal_button">
+    <div class="emulator_modal modal_button " role="alertdialog" aria-label="">
+        <div class="emulator_modal-body">
+            <div class="emulator_modal-body-text" aria-hidden="true"><% print(content) %></div>
+            <button class="btn btn-primary btn-modal-js" aria-label="<% print(EmulatorHelper().stripTags(content))%> <% print(buttonText) %>">
+                <% print(buttonText) %>
+            </button>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="template-emulator_modal">
+    <div class="emulator_modal " role="alertdialog" aria-label="">
+        <%if(type != "html") {%>
+                <input class="block emulator_modal-close" type="button"  >  <span class="sr-only"><%-content.replace(/(<([^>]+)>)/ig,"")%> Close button.</span>   </input>
+        <%}%>
+        <div class="emulator_modal-body">
+            <div class="emulator_modal-content emulator_modal-content-<%-type%>" aria-hidden="true">
+                <div class="icon-container"></div>
+                <div class="help__body"><%=content%></div>
+            </div>
+        </div>
+    </div>
+</script>
+    <div class="emulator">
+        <div class="center emulator_screens">
+            <div class="emulator_steps"></div>
+        </div>
+        <script type="text/javascript">
+            var s3_bucket = "hspb";
+        </script>
+        <script type="text/javascript" src="./emulator-base.js.download"></script>
+        <script type="text/javascript" src="./mobile-emulator.js.download"></script>
+        <script type="text/javascript" src="./gifffer.min.js.download"></script>
+        <script type="text/javascript" src="./emulator_gif_reloader.js.download"></script>
+        <script type="text/javascript" src="./mobileEmulator.min.js.download"></script>
+        <link media="all" rel="stylesheet" href="./mobileEmulator.min.css">
+</div>
+
+                                </div>
+        
+                    </div>
+</div>
+<script type="text/javascript" src="./underscore-min.js.download"></script>
+<script type="text/javascript" src="./emulator-topbar-nav.js.download"></script>
+<script type="text/javascript">
+            APP.activityName = "Lock card - Card Controls";
+        APP.activityTag = "emulator-public-lock-card-card-controls";
+        APP.simulatorType = 'mobile-emulator';
+    
+    $(document).ready(function(){
+        var source = "embedded";
+        var urlSource = source ? '/' + source : '';
+        var mobile_width_breakpoint = 720,
+            emulator = $(".emulator"),
+            emulator_container = $(".emulator_container");
+        var TryAgainButton = {
+            id : ".btn-try-again",
+            hideElement : function (element) {
+                $(this.id).on('click', function () {
+                    $(element).removeClass("hidden");
+                })
+            }
+        };
+
+        $('#step_done').bind('click', function(e) {
+            var disabledStatus = $('#is_disabled').val();
+            if (disabledStatus == '1') {
+                $("#error_msg").removeClass('hidden');
+                return false;
+            }
+            else {
+                $("#error_msg").addClass('hidden');
+                return true;
+            }
+        });
+
+        if($(window).outerWidth() <= 768) {
+            $("#emulator-desktop-progress").prependTo($(".emulator-mobile_top_header")).removeClass("clearfix");
+            $(".switch-container").prependTo($(".emulator-mobile_top_header"));
+        }
+
+        $(".feature-explorer-home").hide();
+
+        emulator.on('EXIT_EMULATOR',function(){
+            location.href = "/home/";
+        });
+
+        emulator.on('RENDERED_EMULATOR_TEMPLATE',function(){
+            var redo_btn = $(".feature-explorer-redo_emulator");
+
+            redo_btn.click(function(e){
+                e.preventDefault();
+                redo_btn.addClass("disabled");
+                $(".emulator_container").trigger("reset_emulator");
+                redo_btn.hide();
+            });
+        });
+                    emulator.on('EMULATOR_NEXT',function(e, current_step, next_step) {
+                // Trigger events for each step (excluding start/end as they have their own)
+                if(current_step != 'landing' && next_step != 'ending') {
+                    analytics.trigger("SIMULATOR_CLICK", {
+                        stepNumber: next_step,
+                        clickType: 'step'
+                    });
+                }
+            });
+
+            emulator_container.on('EMULATOR_DONE',function(){
+                simulatorTimeTaken = Date.now() - simStartTime;
+                $(".switch-container").addClass('hidden');
+                $.post('/en/course/markdone_ajax/public-services-alerts' + urlSource,
+                        {
+                            activity_order: 1
+                        },
+                        function(result) {
+                        },
+                        'json');
+                $("#emulator-desktop-progress").addClass('hidden');
+
+
+                analytics.trigger("SIMULATOR_END", {
+                    stepNumber: parseInt(window.emulator_data.steps.length) - 1,
+                    timeTaken: simulatorTimeTaken
+                });
+            });
+        
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+            }
+        });
+
+        $.get("https://guides.peoples.com/en/course/emulatorData/emulator-public-lock-card-card-controls", function(result) {
+            window.emulator_data = result;
+            window.emulator_menu = {};
+            window.emulator_copies = {
+                "exit_emulator_text": "**MISSING** exit_emulator_text(course email_referral course:course-one course:public-services-alerts)"
+            };
+
+            window.init_emulator();
+            emulatorRenderer().enableSwitchPulse($(".switch-container input"));
+            $("body a, body button, body input:not(.checkbox-ada), .ending-emulator-wrapper h2, .ending-emulator-wrapper h3").not(".tabbing-disabled").each(function () {
+                $(this).attr("tabindex", 0)
+            });
+
+            if (typeof social_bar !== 'undefined') {
+                social_bar.bind();
+            }
+            $('.emulator_view_mobile').bind('click',function(){
+                if($(window).width() > mobile_width_breakpoint ) {
+                    return;
+                }
+
+            });
+            emulator_container.on('EMULATOR_STARTED',function(){
+                                    simStartTime = Date.now();
+                    $.post('/en/course/markstarted_ajax/public-services-alerts' + urlSource,
+                            {
+                                activity_order: 1
+                            });
+
+                    analytics.trigger("SIMULATOR_START", {
+                        stepNumber: "1"
+                    });
+                
+                $(".feature-explorer-home").removeClass("disabled").show();
+                $(".switch-container").removeClass('hidden');
+
+                $(".previous-step, .feature-explorer-redo_emulator").removeClass("emulator-navigator-disable");
+                $("#emulator-desktop-progress").removeClass('hidden');
+            });
+
+            initialize_topbar_navigation(true);
+
+            $(".feature-explorer-redo_emulator").on('click', function(e) {
+                e.preventDefault();
+                $(".switch-container").addClass('hidden');
+                $("#emulator-desktop-progress").addClass('hidden');
+            });
+
+                            $( ".emulator-help_icon" ).on( "click", function(e) {
+                    analytics.trigger("SIMULATOR_CLICK", {
+                        stepNumber: $('.emulator_step:visible').attr('data-id'),
+                        clickType: 'help'
+                    });
+                });
+            
+            ADA.init();
+
+                    },'json');
+
+
+    });
+</script>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-modal-overlay"></div>
+<script src="./css-vars-ponyfill.min.js.download"></script>
+<script>
+    cssVars({
+        exclude: '[data-exclude]'
+    });
+</script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"3c4155552c","applicationID":"422182090","transactionName":"ZFFQMRNSWkFTVEZRDF0bcwYVWltcHVRdTRFAUW0WFVJGRg==","queueTime":0,"applicationTime":172,"atts":"SBZTR1tISU8=","errorBeacon":"bam.nr-data.net","agent":""}</script>
+
+</body></html>

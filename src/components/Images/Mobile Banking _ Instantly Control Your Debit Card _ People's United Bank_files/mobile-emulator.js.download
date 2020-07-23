@@ -1,0 +1,809 @@
+var tapTargetInitializer = function() {
+    // Helper function calculate positions
+    function calcTapTargetPos(screen_width, screen_height, container_element)
+    {
+        var phone_screen_max_width = screen_width ? screen_width : 286;
+        var phone_screen_max_height = screen_height ? screen_height : 508;
+        var $w = container_element ? container_element.find(".emulator_inner_phone_container") : $('.emulator_inner_phone_container');
+        var $wv = container_element ? container_element.find(".emulator_inner_phone_container:visible") : $('.emulator_inner_phone_container:visible');
+        if($wv.length == 0) {
+            $wv = container_element ? container_element.find(".emulator_inner_phone_container").first() : $(".emulator_inner_phone_container").first();
+        }
+        var wp = ($wv.width() / phone_screen_max_width) || 0;
+        var $wpp = $w.find('.emulator_interactive_element, .emulator_focus_pulse');
+
+        $w.css("height", phone_screen_max_height * wp + "px");
+        $w.parents(".emulator_step").css("min-height", phone_screen_max_height * wp + "px");
+        $wpp.each(function(i,e){
+            var sl = $(e).data('left');
+            var st = $(e).data('top');
+            var sh = $(e).data('height');
+            var sw = $(e).data('width');
+
+            $(e).css('left', sl * wp + 'px');
+            $(e).css('top', st * wp + 'px');
+            $(e).css('height', sh * wp + 'px');
+            $(e).width(sw * wp);
+
+            // Resizing inner tapping element for ie8
+            if($(e).hasClass("emulator-tapping")) {
+                $(e).find("img").css('height', sh * wp + 'px').css("width", sw * wp + "px");
+            } else {
+                $(e).find(".emulator-tapping > img").css('height', sh * wp + 'px').css("width", sw * wp + "px");
+            }
+        });
+    }
+
+    return {
+        calcTapTargetPos: calcTapTargetPos
+    };
+}
+
+var emulatorRenderer = function(frame_image, handler_callback) {
+    // Render templates
+    function render_emulator(emulator_data, container_element, global_elements) {
+        var template_focus_pulse = _.template($("#template-emulator_focus_pulse").html());
+        var template_element_factory = function(element) {
+            var template = _.template($("#template-emulator_element-" + element.type).html());
+            return template({"element": element, "copy": emulator_copies});
+        };
+        var template_main = _.template($("#template-emulator").html());
+
+        $(".emulator-mobile_close > span").text(window.emulator_data.exit_emulator_text);
+        _.each(emulator_data.steps, function(screen_config, index) {
+            var custom_image = screen_config.frame_image ? screen_config.frame_image : frame_image;
+            var main_render_data = {
+                "step": screen_config,
+                "template_element_factory": template_element_factory,
+                "frame_image": custom_image,
+                "render_focus_pulse": template_focus_pulse,
+                "global_elements": global_elements,
+                "isEndingScreen": (emulator_data.steps.length - 1 == index)
+            };
+            container_element.append(template_main(main_render_data));
+        });
+        handler_callback(emulator_data, container_element);
+        $(".emulator").trigger("RENDERED_EMULATOR_TEMPLATE");
+
+    }
+
+    function overlayScreen(bool)
+    {
+        return baseEmulatorRenderer().overlayScreen(bool);
+    }
+
+    return {
+        render_emulator: render_emulator,
+        overlayScreen: overlayScreen,
+        enableSwitchPulse: enableSwitchPulse
+    };
+}
+
+function ScreenElementHelper() {
+    var helpElement = $(".emulator-help_icon");
+    var focusElement = $('.emulator_interactive_element[data-type="tapping"]');
+
+    function hideElements() {
+        helpElement.filter(':visible').hide();
+        focusElement.filter(':visible').hide();
+    }
+
+    function showElements() {
+        helpElement.show();
+        focusElement.filter(':not(.element-hidden)').show().find("button:visible").focus();
+    }
+
+    function deleteElements() {
+        helpElement.filter(':visible').remove();
+        focusElement.filter(':visible').remove();
+    }
+
+    return {
+        hideElements: hideElements,
+        showElements: showElements,
+        deleteElements: deleteElements
+    }
+}
+
+var modalRenderer = function() {
+
+    var defaultTemplate = $("#template-emulator_modal").html(),
+        innerPhoneFrame = $(".frame-interior"),
+        emulator = $('.emulator');
+
+    var overlayHTML = '<div class="modal-overlay"></div>';
+
+    function overlayHOOB() {
+        if(innerPhoneFrame.length) {
+            innerPhoneFrame.prepend(overlayHTML);
+        }
+    }
+
+    function overlayNoHOOB() {
+        if(!innerPhoneFrame.length) {
+            emulator.prepend(overlayHTML);
+            emulator.css('position', 'relative');
+        }
+    }
+
+    function removeOverlay() {
+        getModalContainer().find(".modal-overlay").remove();
+    }
+
+    // Helper function apply overlay
+    function overlayMe(bool)
+    {
+        if(bool) {
+            overlayHOOB();
+            overlayNoHOOB();
+
+        } else {
+            removeOverlay();
+        }
+        addEscapeTrigger();
+    }
+
+    function hideEmulatorModal()
+    {
+        addMobileEmulatorTabIndexToBody();
+        modalRenderer().overlayMe(false);
+        $(".emulator_modal").remove();
+        ScreenElementHelper().showElements();
+    }
+
+    function modalTemplateFactory(type) {
+        var templateObject = defaultTemplate;
+        switch (type) {
+            case "modal_button":
+                templateObject = $("#template-emulator_modal_button").html();
+                break
+        }
+        return templateObject;
+    }
+
+    function addEscapeTrigger() {
+        $(document).keyup(function(e) {
+            if (e.keyCode == 27 && $(".modal-overlay:visible").length) {
+                $(".emulator_modal-close").trigger("click")
+            }
+        });
+    }
+
+    function getModalContainer() {
+        return innerPhoneFrame.length ? innerPhoneFrame : emulator;
+    }
+
+    function attachModalToEmulator(html) {
+        var modalContainer = getModalContainer();
+
+        modalContainer.find(".emulator_modal").remove();
+        modalContainer.append(html);
+    }
+    // Helper function trigger modal
+    function triggerModal(type, content)
+    {
+        modalRenderer().overlayMe(true);
+        var template = _.template(modalTemplateFactory(type));
+        var templateObject = (typeof content == 'string' || content instanceof String ) ? {"type": type, "content": content} : content;
+        var topBarHelp = $('.emulator_phone_header_bar .emulator-help_icon');
+
+        attachModalToEmulator(template(templateObject));
+
+        resetMobileEmulatorTabIndex();
+        $('.block.emulator_modal-close:visible').focus()
+        $('.btn-modal-js:visible').focus()
+
+        $("body").on("click", ".btn-modal-js",function(e) {
+            e.preventDefault();
+            topBarHelp.css({display: ''});
+            hideEmulatorModal();
+        });
+        // focus on the close icon
+        setTimeout(function() {
+            $('.block.emulator_modal-close').focus()
+        }, 50);
+
+        if (type == 'modal_button') {
+            topBarHelp.css({display: 'none'});
+        }
+    }
+
+    function bindModalCloseEvent() {
+        $(".emulator_modal-close").on('click',function(e) {
+            e.preventDefault();
+            $(this).parents(".emulator_modal").remove();
+            overlayMe(false);
+
+            addMobileEmulatorTabIndexToBody();
+            // move focus back to the help icon
+            $(".emulator-help_icon").focus();
+        });
+    }
+
+    function resetMobileEmulatorTabIndex() {
+        // remove elements other than the close icon from the tab order
+        $("body a, body button, body input").not(".block.emulator_modal-close").not(".btn-modal-js").each(function (index) {
+            $(this).attr("tabindex", -1)
+        });
+    }
+
+    function addMobileEmulatorTabIndexToBody() {
+        // re-initialize the tab order
+        $("body a, body button, body input, .ending-emulator-wrapper h2, .ending-emulator-wrapper h3").not(".tabbing-disabled").not(".btn-modal-js").each(function (index) {
+            $(this).attr("tabindex", index+1)
+        });
+    }
+
+    return {
+        overlayMe: overlayMe,
+        hideEmulatorModal: hideEmulatorModal,
+        triggerModal: triggerModal,
+        bindModalCloseEvent: bindModalCloseEvent
+    };
+}
+
+var emulatorResetter = function() {
+    function resetEmulator() {
+        modalRenderer().overlayMe(false);
+        emulatorRenderer().overlayScreen(false);
+        $(".emulator_menu").hide();
+        $(".emulator_modal").remove();
+        $(".emulator_step").hide();
+        existing_data = {};
+        $(".emulator-input").val("");
+        emulator_started = false;
+
+        // reload screen images
+        $("img.emulator_app_screenshot").each(function(){
+            if( $(this).prop("src").toLowerCase().match(/\.gif/)) {
+                var query_pref = "?";
+                if($(this).prop("src").match(/\?/)) {
+                    query_pref = "&";
+                }
+                $(this).attr("src", $(this).attr("src") + query_pref + "hs_refresh=" + new Date().getTime());
+            }
+        });
+    }
+
+    return {
+        resetEmulator: resetEmulator
+    }
+}
+
+function init_emulator() {
+    var existing_data = {};
+    var emulator_started = false;
+    var subemulator_titles = {};
+    var active_subemulator_course_tag = "";
+    var frame_image = window.emulator_data.frame_image;
+    var override_key = window.emulator_data.override_key ? window.emulator_data.override_key : "";
+
+    var emulatorFrame = new EmulatorFrame(window.emulator_data);
+    emulatorFrame.loadFrame();
+
+    if(emulator_menu){
+        _.each(emulator_menu, function(item){
+            if(item.url) {
+                item.url = appurl_prefix + item.url;
+            }
+            _.each(item.submenu, function(submenu_item){
+                subemulator_titles[submenu_item.tag+"-android"] = submenu_item.name;
+                subemulator_titles[submenu_item.tag+"-ios"] = submenu_item.name;
+            });
+        });
+    }
+    if(override_key) {
+        $(".emulator").addClass("emulator--" + override_key);
+    }
+
+    var step_id_map_array =  stepIdMapArray(window.emulator_data.steps);
+
+    topNavigator.previousScreenClickEvent(nextStep);
+    topNavigator.nextScreenClickEvent(nextStep);
+
+    // Helper function move on to step
+    function nextStep(current_step_id, next_step_id, user_action)
+    {
+        if (typeof user_action == 'undefined') {
+            user_action = {
+                sourceType: 'default',
+                direction: 'forward'
+            };
+        }
+
+        var next_step_callback = function() {
+            nextStep(current_step_id, next_step_id, {
+                sourceType: 'post-popup',
+                direction: 'forward'
+            })
+        };
+
+        var toggleDone = popupHelper.togglePopupInSameStep(current_step_id, user_action, next_step_callback, gifAnimator);
+        if (toggleDone != null) {
+            if ($.isFunction(toggleDone.promise)) {
+                $.when(toggleDone).then(function() {
+                    autoTransition.assessAutoTransition(current_step_id, nextStep);
+                });
+            }
+            return;
+        }
+
+        if(!emulator_started) {
+            emulator_started = true
+        }
+        modalRenderer().hideEmulatorModal();
+        topNavigator.previousScreenClickEvent(nextStep);
+        retryButton();
+        topNavigator.nextScreenClickEvent(nextStep);
+        $(".emulator").find(".emulator_modal").remove();
+        $(".emulator_step ").hide();
+        $(".emulator_step-" + current_step_id).hide();
+        var next_step_element = $(".emulator_step-" + next_step_id);
+        var start_element_id = next_step_element.data("start_element_id");
+
+        next_step_element.show();
+        // auto popup
+        if(next_step_element.data("auto_popup_content")) {
+            modalRenderer().triggerModal("html", next_step_element.data("auto_popup_content"));
+            modalRenderer().bindModalCloseEvent();
+        }
+        // auto focus
+        if(start_element_id) {
+            var input_eles = $(".emulator_interactive_element-" + start_element_id + ":visible").find("input");
+            if(input_eles.length > 0) {
+                $(input_eles[0]).siblings(".emulator_focus_pulse").hide();
+                setTimeout(function(){
+                    $(input_eles[0]).focus();
+                }, 10);
+            }
+        }
+
+        if(current_step_id == "landing" || current_step_id == "master_landing") {
+            $(".emulator").trigger("EMULATOR_STARTED", active_subemulator_course_tag);
+        }
+        if(next_step_id == "ending") {
+            $(".emulator").trigger("EMULATOR_DONE", active_subemulator_course_tag);
+        }
+        var custom_screen_width = next_step_element.data("width") ? next_step_element.data("width") : emulator_data.phone_screen_max_width;
+        var custom_screen_height = next_step_element.data("height") ? next_step_element.data("height") : emulator_data.phone_screen_max_height;
+
+        tapTargetInitializer().calcTapTargetPos(custom_screen_width, custom_screen_height, next_step_element);
+
+        $(".emulator").trigger("EMULATOR_NEXT", [current_step_id, next_step_id, function() {
+            topNavigator.emulatorProgressBar(current_step_id, next_step_id);
+        }]);
+
+        var popUpDone = popupHelper.showRelevantPopup(
+            current_step_id,
+            next_step_id,
+            function () {
+            },
+            function() {
+                nextStep(next_step_id, current_step_id, {
+                    sourceType: 'post-popup',
+                    direction: 'forward'
+                })
+            },
+            user_action
+        );
+
+        if (autoTransition.hasAutoTransition(next_step_id)) {
+            gifAnimator.stopAnimation(next_step_id);
+        }
+
+        $.when(popUpDone).then(function() {
+            var timeOut = user_action.direction == 'forward' ? 0 : 20;
+            setTimeout(function() {
+                autoTransition.assessAutoTransition(next_step_id, nextStep)
+            }, timeOut);
+
+            EmulatorADAContainer.focusToTappingElement();
+        });
+
+        if( isIE11() ) {
+            setTimeout(function() {
+                gifAnimator.resetGifImage();
+            }, 5000)
+        }
+    }
+
+    function isIE11() {
+        return /Trident.*rv[ :]*11\./.test(navigator.userAgent);
+    }
+
+    function stepIdMapArray(steps){
+        var steps_numbers = steps.slice(1, -1);
+        var step_id_map_array=[];
+        $.map(steps, function( val, i ) {
+               step_id_map_array[i] = val.id.toString();
+        });
+        return step_id_map_array;
+    }
+
+    function retryButton(){
+        var redoBtn = $(".feature-explorer-redo_emulator");
+        redoBtn.unbind('click');
+        redoBtn.click(function(e){
+            e.preventDefault();
+            $(".emulator").trigger("EMULATOR_TRYAGAIN");
+            if(!$(this).hasClass("emulator-navigator-disable"))
+            {
+                autoTransition.clearAutoTransition();
+                $(".current-step").text(1);
+                $(".previous-step").attr("data-previousstep", 0).addClass("emulator-navigator-disable");
+                $(".next-step").attr("data-nextstep", 0).addClass("emulator-navigator-disable");
+                $(".emulator_container").trigger("reset_emulator");
+                $(this).addClass("emulator-navigator-disable");
+
+                setTimeout(function () {
+                    redoBtn.blur();
+                    $('#btn-start-simulator').focus();
+                }, 100);
+
+                topNavigator.setCurrentStepData({
+                    text: 0,
+                    id: "landing"
+                });
+                topNavigator.emulatorProgressBar("ending", "landing");
+            }
+        });
+    }
+
+    // Helper function sync existing data to all fields
+    function syncExistingDataToFields() {
+        _.each(existing_data, function(val, key) {
+            var input_ele = $("input[data-name=\"" + key + "\"]");
+            if(val && input_ele.data("background_color")) {
+                input_ele.css("background-color",  input_ele.data("background_color"));
+            }
+
+            if(val && input_ele.data("color")) {
+                input_ele.css("color",  input_ele.data("color"));
+            }
+
+            if(input_ele.hasClass("emulator_input-masked")) {
+                var mask_char = input_ele.data("mask_char").toString();
+                var masked_val = "";
+                for(var i = 0; i < val.length; i++ ) {
+                    masked_val += mask_char;
+                }
+                input_ele.val(masked_val);
+            } else {
+                input_ele.val(formatValue(val, input_ele.data("value_format")));
+            }
+        });
+    }
+
+    // Helper function check validation
+    function checkValidation(value, validation) {
+        var validation_rule = validation.rule;
+        var validation_data = validation.data;
+        switch(validation_rule) {
+            case "LENGTH_EQUAL":
+                if(value.length != parseInt(validation_data)) {
+                    return false;
+                }
+                break;
+            case "REQUIRED_FIELD":
+                if(!value) {
+                    return false;
+                }
+                break;
+            case "VALUE_MATCH_EXISTING":
+                if(value != existing_data[validation_data]) {
+                    return false;
+                }
+                break;
+            case "LESS_EQUAL":
+                if(parseFloat(value) > parseFloat(validation_data)) {
+                    return false;
+                }
+            default:
+                break;
+        }
+        return true;
+    }
+
+    // Helper function format input value
+    function formatValue(val, format) {
+        switch(format) {
+            case "CURRENCY":
+                if(!val) {
+                    val = 0;
+                }
+                return parseFloat(val).toFixed(Math.max(2, (val.toString().split('.')[1] || []).length));
+            // return parseFloat(Math.round(parseFloat(val) * 100) / 100).toFixed(2);
+            default:
+                return val;
+        }
+    }
+
+    function render_subemulator(course_tag, subemulator_render_data) {
+        emulatorResetter().resetEmulator();
+        // Construct global element
+        var header_data = [{
+            "id_postfix": "header",
+            "type": "header",
+            "top": 0,
+            "left": 0,
+            "width": 286.4,
+            "height": 40,
+            "header_type": "back_text",
+            "title": subemulator_titles[course_tag]
+        }]
+        $(".emulator_subemulator_steps").remove();
+        $(".emulator_steps").append("<div class=\"emulator_subemulator_steps\" data-subemulator_id=\"" + course_tag + "\"></div>");
+        emulatorRenderer(frame_image, attachEventHandlers).render_emulator(subemulator_render_data, $(".emulator_subemulator_steps"), header_data);
+        closeMenu();
+        nextStep($(".emulator_step:visible").data("id"), "landing");
+        active_subemulator_course_tag = course_tag;
+
+        ie8_valign();
+    }
+
+    emulatorRenderer(frame_image, attachEventHandlers).render_emulator(window.emulator_data, $(".emulator_steps"));
+
+    // Render menu
+    if(emulator_data.has_menu) {
+        $(".emulator_screens").append(_.template($("#template-emulator_menu").html())({"data": emulator_menu, "copy": emulator_copies, "menu_tag_maps": emulator_menu_screen_id_map}));
+    }
+
+    // event handler render subemulator
+    $(".emulator-populate_sub").click(function(e){
+        e.preventDefault();
+        var course_tag = $(this).data("course_tag");
+        if(!window.sub_emulator_data[course_tag]) {
+            $.ajax({
+                "url": "" + course_tag,
+                "method": "get"
+            }).done(function(data){
+                window.sub_emulator_data[course_tag] = data;
+                render_subemulator(course_tag, data);
+            });
+        } else {
+            render_subemulator(course_tag, window.sub_emulator_data[course_tag]);
+        }
+    });
+    var enterWasPressed = false;
+    // event handlers
+    function attachEventHandlers(emulator_data, container_element) {
+        tapTargetInitializer().calcTapTargetPos(emulator_data.phone_screen_max_width, emulator_data.phone_screen_max_height, container_element)
+
+        enterWasPressed = false;
+
+        container_element.find(".emulator-tapping").keyup(function(e) {
+            if($(this).is('button') !== true) {
+                e.preventDefault();
+            }
+            if (!e) {
+                e = window.event;  // Get event details for IE
+                e.which = e.keyCode; // assign which property (so rest of the code w$
+            }
+
+            if(e.keyCode == 13 || e.which == 9) {
+                enterWasPressed = true;
+            }
+        });
+        container_element.find(".emulator-tapping").on('touchstart',function(e) {
+            enterWasPressed = true;
+        });
+        // Handle tapping element
+        container_element.find(".emulator-tapping").on('click',function(e) {
+            e.preventDefault();
+
+            if(!$(this).data("target_step_id")){
+                return;
+            }
+            var is_valid = true;
+
+            _.each($(this).siblings(".emulator_tapping-validation"), function(ele) {
+                if(is_valid == false) {
+                    return;
+                }
+                var validation_rule = $(ele).data("rule");
+                var validation_data = $(ele).data("data");
+                var validation_msg = $(ele).data("error_msg");
+                is_valid = checkValidation(existing_data[$(ele).data("key")], {"rule": validation_rule, "data": validation_data});
+
+                if(!is_valid) {
+                    modalRenderer().triggerModal("error", validation_msg);
+                    modalRenderer().bindModalCloseEvent();
+                }
+            });
+            if(!is_valid) {
+                return;
+            }
+
+            nextStep($(this).parents(".emulator_step").data("id"), $(this).data("target_step_id"));
+        });
+
+        container_element.find(".emulator-tapping-img-container-js img").on('click', function (e) {
+            $(this).parent().prev().trigger('click');
+        })
+        // Handle help element
+        container_element.find(".emulator-help_icon").click(function(e) {
+            e.preventDefault();
+            if($(this).hasClass("emulator-help_icon-disabled") == false) {
+                modalRenderer().triggerModal("help", $(this).data("message_text"));
+                modalRenderer().bindModalCloseEvent();
+            }
+        });
+
+
+        // Handle input element
+        // focus is for accessibility tabbing
+        container_element.find(".emulator-input").on("click focus", function(e) {
+            $(this).css("opacity", 1).css("-ms-filter", "progid:DXImageTransform.Microsoft.gradient(enabled=false)");
+            $(this).siblings(".emulator_focus_pulse").hide();
+        }).focusout(function(e) {
+            // TODO: Add regex filtering
+            if($(this).val() == "") {
+                $(this).siblings(".emulator_focus_pulse").show();
+                $(this).css("opacity", 0).css("-ms-filter", "\"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)\"");
+            }
+        }).change(function(e) {
+            var self = this;
+            var is_valid = true;
+
+            _.each($(this).siblings(".emulator_input-validation"), function(ele) {
+                if(is_valid == false) {
+                    return;
+                }
+                var validation_rule = $(ele).data("rule");
+                var validation_data = $(ele).data("data");
+                var validation_msg = $(ele).data("error_msg");
+                is_valid = checkValidation($(self).val(), {"rule": validation_rule, "data": validation_data});
+
+                if(!is_valid) {
+                    modalRenderer().triggerModal("error", validation_msg);
+                    modalRenderer().bindModalCloseEvent();
+                }
+            });
+            if(is_valid) {
+                existing_data[$(self).data("name")] = $(self).val();
+                syncExistingDataToFields();
+                if($(self).data("target_step_id")) {
+                    nextStep($(self).parents(".emulator_step").data("id"), $(self).data("target_step_id"));
+                }
+            }
+        });
+        // Handle auto next input element
+        container_element.find(".emulator-input-auto_next").on("keydown keyup change focus" ,function() {
+            var self = this;
+            var is_valid = true;
+
+            _.each($(this).siblings(".emulator_input-validation"), function(ele) {
+                if(is_valid == false) {
+                    return;
+                }
+                var validation_rule = $(ele).data("rule");
+                var validation_data = $(ele).data("data");
+                is_valid = checkValidation($(self).val(), {"rule": validation_rule, "data": validation_data});
+            });
+            if(is_valid) {
+                existing_data[$(self).data("name")] = $(self).val();
+                syncExistingDataToFields();
+                nextStep($(self).parents(".emulator_step").data("id"), $(self).data("target_step_id"));
+            }
+        });
+        // Handle in-screen number pad
+        container_element.find(".emulator-passcode-key").click(function(e) {
+            e.preventDefault();
+            var data_key = $(this).parents(".emulator-passcode").data("data_key");
+            var can_proceed = false;
+            if($(this).parents(".emulator-passcode").data("auto_next")) {
+                can_proceed = true;
+            }
+
+            switch($(this).data("type")) {
+                case "input":
+                    if(existing_data[data_key]) {
+                        existing_data[data_key] += $(this).data("value").toString();
+                    } else {
+                        existing_data[data_key] = $(this).data("value").toString();
+                    }
+                    break;
+                case "delete":
+                    existing_data[data_key] = existing_data[data_key].substring(0,existing_data[data_key].length - 1);
+                    break;
+                case "next":
+                    can_proceed = true;
+                    var is_valid = true
+                    _.each($(this).parents(".emulator-passcode").siblings(".emulator_passcode-validation"), function(ele) {
+                        if(is_valid == false) {
+                            return;
+                        }
+                        var validation_rule = $(ele).data("rule");
+                        var validation_data = $(ele).data("data");
+                        var validation_msg = $(ele).data("error_msg");
+                        is_valid = checkValidation(existing_data[data_key], {"rule": validation_rule, "data": validation_data});
+
+                        if(!is_valid) {
+                            modalRenderer().triggerModal("error", validation_msg);
+                            modalRenderer().bindModalCloseEvent();
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+            syncExistingDataToFields();
+            var is_valid = true;
+            _.each($(this).parents(".emulator-passcode").siblings(".emulator_passcode-validation"), function(ele) {
+                if(is_valid == false) {
+                    return;
+                }
+                var validation_rule = $(ele).data("rule");
+                var validation_data = $(ele).data("data");
+                is_valid = checkValidation(existing_data[data_key], {"rule": validation_rule, "data": validation_data});
+            });
+
+            if(is_valid && can_proceed) {
+                nextStep($(this).parents(".emulator_step").data("id"), $(this).parents(".emulator-passcode").data("target_step_id"));
+            }
+        });
+        // Handle exit emulator
+        container_element.find(".emulator-mobile_close").click(function(e) {
+            e.preventDefault();
+            if($(".emulator_step:visible").data("id") != "ending") {
+                nextStep($(".emulator_step:visible").data("id"), "landing");
+            }
+            $(".emulator").trigger("EXIT_EMULATOR");
+        });
+        // Handle header menu click
+        container_element.find(".emulator-header-menu").click(function(e){
+            e.preventDefault();
+            // resize the menu body
+            $(".emulator_menu-body").outerHeight($(".emulator_inner_phone_container").outerHeight()-$(".emulator_menu-header").outerHeight()-$(".emulator_menu-footer").outerHeight());
+
+            emulatorRenderer().overlayScreen(true);
+            $(".emulator_menu").show();
+            $(".modal-overlay.modal-overlay-in_screen").click(function(e2){
+                e2.preventDefault();
+                closeMenu();
+            });
+        });
+        container_element.find(".emulator-header-home").click(function(e) {
+            e.preventDefault();
+            emulatorResetter().resetEmulator();
+            $(".emulator_step-master_menu").show();
+        });
+        container_element.find(".emulator-header-back").click(function(e) {
+            e.preventDefault();
+            emulatorResetter().resetEmulator();
+
+            $(".emulator_step-" + emulator_menu_screen_id_map[$(".emulator_subemulator_steps").data("subemulator_id")]).show();
+        })
+    }
+
+    // emulator hub header and menu related
+    function closeMenu() {
+        emulatorRenderer().overlayScreen(false);
+        $(".emulator_menu").hide();
+    }
+
+    // reset emulator
+    $(".emulator").parent().on("reset_emulator", function(){
+        emulatorResetter().resetEmulator();
+        $(".emulator_step").first().show();
+        tapTargetInitializer().calcTapTargetPos(emulator_data.phone_screen_max_width, emulator_data.phone_screen_max_height);
+        enterWasPressed = false;
+    });
+
+    // Exit Emulator
+    $(".emulator-mobile_close").click(function(e) {
+        e.preventDefault();
+        if($(".emulator_step:visible").data("id") != "ending") {
+            nextStep($(".emulator_step:visible").data("id"), "landing");
+        }
+        $(".emulator").trigger("EXIT_EMULATOR");
+    });
+
+    // trigger sizing
+    setTimeout(function(){
+        tapTargetInitializer().calcTapTargetPos(emulator_data.phone_screen_max_width, emulator_data.phone_screen_max_height);
+    }, 100);
+    $(window).on('resize', function(){
+        tapTargetInitializer().calcTapTargetPos(emulator_data.phone_screen_max_width, emulator_data.phone_screen_max_height);
+    });
+}

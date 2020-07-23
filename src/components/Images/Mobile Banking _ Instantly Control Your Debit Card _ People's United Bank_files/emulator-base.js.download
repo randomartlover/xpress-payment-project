@@ -1,0 +1,36 @@
+var baseEmulatorRenderer = function() {
+    function overlayScreen(bool) {
+        if (bool) {
+            if ($('.emulator_inner_phone_container:visible').find('.modal-overlay.modal-overlay-in_screen').length == 0) {
+                $('.emulator_inner_phone_container:visible').prepend('<div class="modal-overlay modal-overlay-in_screen" ></div>');
+            }
+        } else {
+            $('.emulator_inner_phone_container:visible').find('.modal-overlay.modal-overlay-in_screen').remove();
+        }
+    }
+
+    return {
+        overlayScreen: overlayScreen
+    }
+}
+
+var emulatorStepHandler = function() {
+    function findStepIndexById(emulator_data, step_id) {
+        if (step_id == 'landing' || step_id == 'ending') {
+            return step_id;
+        }
+
+        for (var i = 1; i < emulator_data.steps.length - 1; i++) {
+            var step = emulator_data.steps[i];
+            if (step.id == step_id) {
+                return i;
+            }
+        }
+
+        return null;
+    }
+
+    return {
+        findStepIndexById: findStepIndexById
+    }
+}

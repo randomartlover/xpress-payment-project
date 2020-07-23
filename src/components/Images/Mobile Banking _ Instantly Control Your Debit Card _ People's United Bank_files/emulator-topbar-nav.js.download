@@ -1,0 +1,26 @@
+function initialize_topbar_navigation(is_demo_site)
+{
+    $(".emulator").on('EMULATOR_STARTED',function(e) {
+        $(".previous-step, .feature-explorer-redo_emulator").removeClass("emulator-navigator-disable");
+    });
+    $(".emulator").on('EMULATOR_NEXT', function(e, current_step_id, next_step_id, cb) {
+        if (next_step_id == 'landing') {
+            $(".previous-step").addClass("emulator-navigator-disable");
+        }
+    });
+
+    //@TODO: Update clients to use new object format
+    $(".emulator").on('EMULATOR_NEXT', function (e, current_step_id, next_step_id, cb) {
+        if (cb === undefined) {
+            return;
+        }
+        cb();
+    });
+
+    $(".total-steps").text(window.emulator_data.steps.length);
+}
+
+$(document).on('PREVIEW_EMULATOR_LOADED', function(e, is_demo_site) {
+    initialize_topbar_navigation(is_demo_site);
+    $(document).trigger('EMULATOR_TOP_BAR_LOADED');
+});

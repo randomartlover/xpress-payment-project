@@ -1,38 +1,112 @@
-.App {
-  text-align: center;
+ body{
+   font-family: 'Poppins', Arial, Helvetica, sans-serif !important;
+ }
+
+/* navlink*/
+.navbar-light .navbar-nav .nav-link {
+color: #f95e01 !important;
+float: right;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* navlink hover */
+.navbar-light .navbar-nav .nav-link:hover {
+  border-bottom: 1.5px solid #28a745;
+ /* text-decoration: solid green;
+ text-underline-position: below;
+ transition: border .3s ease-in-out; */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+.carousel-img  {
+  max-width: 100%;
+height: auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+/* Change indicator from dash to dot */
+.carousel .carousel-indicators li {
+  width: 10px;
+ height: 10px;
+ border-radius: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+
+.box1 {
+    border: none;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    background-size: 100% 200%;
+    background-image: linear-gradient(to bottom, #28a745 50%, darkgreen 50%);
+    -webkit-transition: background-position 0.5s;
+    -moz-transition: background-position 0.5s;
+    transition: background-position 0.5s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.box1:hover {
+  background-position: 0 100%;
 }
+
+.Slide-4-caption{
+margin-top: 15%;
+}
+
+.box2 {
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-size: 100% 200%;
+  background-image: linear-gradient(to bottom, white 50%, #28a745  50%);
+    -webkit-transition: background-position 0.5s;
+  -moz-transition: background-position 0.5s;
+  transition: background-position 0.5s;
+  
+}
+
+.box2:hover {
+background-position: 0 100%;
+}
+
+/* Vertically center caption */
+.carousel-caption{
+  top: 40%;
+transform: translateY(-50%);
+bottom: 0;
+}
+
+.carousel-item{
+  -webkit-transform-style: preserve-3d;
+-moz-transform-style: preserve-3d;
+transform-style: preserve-3d;
+}
+
+
+.jumbotron{
+  background-color:transparent ! important; 
+}
+
+
+/* add circular border to carousel indicator */
+.carousel-control-prev-icon, .carousel-control-next-icon{
+  border:solid;
+  border-radius: 100%;
+  
+
+}
+
+/* 
+nav button color collapsed */
+.navbar-light .navbar-toggler{
+  background-color: #3b8e3c;
+  border-radius: 100%;
+}
+
+.navbar-light .navbar-toggler-icon{
+color: white;
+}
+
+
+
+

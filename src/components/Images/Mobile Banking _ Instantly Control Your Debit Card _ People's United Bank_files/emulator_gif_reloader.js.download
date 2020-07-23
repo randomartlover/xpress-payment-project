@@ -1,0 +1,44 @@
+(function () {
+    $('.emulator').on('EMULATOR_NEXT', function(e, data_or_current_step_id, optional_next_step_id, callback) {
+        const stepID = resolveCurrentStepId(data_or_current_step_id),
+            $stepElement = $('.emulator_step-' + stepID),
+            $elem = $('.emulator_app_screenshot', $stepElement),
+            src = $elem.attr('src');
+
+        if (!resetGiffferElement($elem) && typeof src === 'string' && src.indexOf('gif') !== -1) {
+            $elem.attr('src', src + '?' + $.now());
+        }
+    });
+
+    $('.emulator_container').on('reset_emulator', function () {
+        $('button.emulator_app_screenshot').each(function (i, elem) {
+            resetGiffferElement($(elem));
+        });
+    });
+
+    //@TODO: Use gifAnimator.resetAnimation
+    function resetGiffferElement($elem)
+    {
+        const $img = $elem.children('img').clone();
+        if (!$img.length) {
+            return false;
+        }
+
+        $.each($elem.prop('attributes'), function () {
+            $img.attr(this.name, this.value);
+        });
+
+        $img.insertBefore($elem);
+        $elem.remove();
+        return $img;
+    }
+
+    function resolveCurrentStepId(data_or_current_step_id)
+    {
+        if (typeof data_or_current_step_id === 'object' && data_or_current_step_id.hasOwnProperty('step_id')) {
+            return data_or_current_step_id.step_id;
+        }
+
+        return data_or_current_step_id;
+    }
+})();
